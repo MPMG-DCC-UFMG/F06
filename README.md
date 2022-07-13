@@ -1,2 +1,2 @@
 # F06
-Chatbot Adaptativo e Geração de Relatórios Analíticos
+Sistema Inteligente de Suporte ao Procon/MG
