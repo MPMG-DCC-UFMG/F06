@@ -33,7 +33,7 @@ function HeaderMainFooter({ children, sideContent }: Props) {
             </div>
         }
         <Layout>
-          <Content className='h-lateral overflow-y-auto'>
+          <Content className='h-lateral overflow-y-auto relative'>
             {children}
           </Content>
         </Layout>

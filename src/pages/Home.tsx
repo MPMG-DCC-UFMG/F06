@@ -1,30 +1,94 @@
 
-import { Button, Input, Select } from 'antd';
+import { Button } from 'antd';
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import HomeHelp from '../components/HomeHelp';
 import Icon from '../components/Icon';
 import SearchField from '../components/SearchField';
 import SearchPanel from '../components/SearchPanel';
 import HeaderMainFooter from '../templates/HeaderMainFooter';
 
+export type SearchValue = {
+    operator?: " " | "+" | "-";
+    query: string;
+    indented?: boolean;
+}
+
 function Home() {
-    const [searchValues, setSearchValues] = useState<any[]>([{}]);
+    const navigate = useNavigate();
+    const [searchValues, setSearchValues] = useState<SearchValue[]>([{
+        operator: "+",
+        query: ""
+    }]);
+
+    const [sourceValues, setSourceValues] = useState<string[]>(["procon", "reclame_aqui", "consumidor_gov"]);
     const [helpIsVisible, setHelpIsVisible] = useState<boolean>(false);
 
+    const search = () => {
+        navigate({
+            pathname: "/results",
+            search: `?query=${buildQuery()}&dataSources=${sourceValues.join(",")}`
+        })
+    }
+
     const addInput = () => {
-        setSearchValues([...searchValues, {}])
+        setSearchValues([...searchValues, {
+            operator: "+",
+            query: ""
+        }])
     }
 
     const removeInput = (i: number) => {
         setSearchValues(searchValues.filter((item, index) => i !== index))
     }
 
-    return (<HeaderMainFooter sideContent={<SearchPanel />}>
+    const updateSearchValue = (index: number, newData: SearchValue) => {
+        const data = [...searchValues];
+        data[index] = newData;
+        setSearchValues(data);
+    }
+
+    const buildQuery = () => {
+        let query = "";
+        let isIndented: boolean | undefined = false;
+        for (const item of searchValues) {
+            if (item.query) {
+
+                if (!item.indented && isIndented)
+                    query += ")";
+
+                if (query)
+                    query += item.operator;
+
+                if (item.indented && !isIndented)
+                    query += "(";
+
+                query += item.query;
+                isIndented = item.indented;
+            }
+        }
+
+        if (isIndented)
+            query += ")";
+
+        return query;
+    }
+
+    const sourceValuesChange = (checkedValues: CheckboxValueType[]) => {
+        setSourceValues(checkedValues.map(item => item.toString()));
+    }
+
+    return (<HeaderMainFooter sideContent={
+        <SearchPanel
+            sourceValues={sourceValues}
+            sourceValuesChange={sourceValuesChange}
+        />
+    }>
         <>
 
             <HomeHelp isModalVisible={helpIsVisible} onClose={() => setHelpIsVisible(false)} />
-            <div className="absolute right-4 top-20 text-xl">
+            <div className="absolute right-4 top-4 text-xl">
                 <Icon name='question-fill' className='cursor-pointer' onClick={() => setHelpIsVisible(true)} />
             </div>
 
@@ -34,9 +98,12 @@ function Home() {
                     {searchValues.map((item, i) =>
                         <SearchField
                             key={i}
+                            index={i}
                             first={i === 0}
                             count={searchValues.length}
+                            data={item}
                             onRemove={() => removeInput(i)}
+                            onChange={updateSearchValue}
                         />
                     )}
 
@@ -53,11 +120,13 @@ function Home() {
                     </div>
 
                     <div className="my-4 text-center">
-                        <Link to="/results">
-                            <Button type='primary' icon={<Icon name='search-line' margin='right' />}>Pesquisar</Button>
-                        </Link>
+                        <Button onClick={() => search()} type='primary' icon={<Icon name='search-line' margin='right' />}>Pesquisar</Button>
                     </div>
                 </div>
+            </div>
+
+            <div className="w-full max-w-lg bottom-3 p-2 bg-slate-800 text-white absolute left-1/2 -translate-x-1/2 rounded-lg text-center opacity-40 hover:opacity-100 transition-opacity">
+                {buildQuery()}
             </div>
         </>
     </HeaderMainFooter >);

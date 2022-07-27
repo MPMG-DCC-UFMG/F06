@@ -35,4 +35,4 @@ Execute a imagem no Docker
 `docker run --rm -itd -p 3000:80 procon-front`
 
 Salvar a imagem para arquivo
-`docker save -o procon-front.tar procon-front`
+`docker save -o procon-front.tar.gz procon-front`
