@@ -1,15 +1,32 @@
 import { Card, Checkbox, DatePicker, Input, Select } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React from 'react';
+import { Endpoint } from '../constants/endpoints';
+import useFetch from '../hooks/useFetch';
 
 const { RangePicker } = DatePicker;
 
 type Props = {
   sourceValues: string[],
   sourceValuesChange: (checkedValues: CheckboxValueType[]) => void;
+  searchDateChange: (date: { start?: string, end?: string }) => void;
+  categoriesChange: (values: string[]) => void;
 }
 
-function SearchPanel({ sourceValues, sourceValuesChange }: Props) {
+function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categoriesChange }: Props) {
+
+  const { data: proconCategories } = useFetch<ICategories[]>(Endpoint.ProconCategories);
+  const { data: reclameAquiCategories } = useFetch<ICategories[]>(Endpoint.ReclameAquiCategories);
+
+  const getCategories = () => {
+    let categories: ICategories[] = [];
+
+    if (proconCategories) categories = categories.concat(proconCategories);
+    if (reclameAquiCategories) categories = categories.concat(reclameAquiCategories);
+
+    return categories;
+  }
+
   return (<div className='-my-4'>
     <Card size='small' title="Bases de dados" className='my-4'>
       <Checkbox.Group
@@ -23,7 +40,12 @@ function SearchPanel({ sourceValues, sourceValuesChange }: Props) {
     </Card>
 
     <Card size='small' title="Período" className='my-4'>
-      <RangePicker />
+      <RangePicker
+        onChange={(values) => searchDateChange({
+          start: values?.[0]?.format("YYYY-MM-DD"),
+          end: values?.[1]?.format("YYYY-MM-DD"),
+        })}
+      />
     </Card>
 
     <Card size='small' title="Categorias" className='my-4'>
@@ -33,12 +55,13 @@ function SearchPanel({ sourceValues, sourceValuesChange }: Props) {
           allowClear
           placeholder="Todas as categorias"
           className='w-full'
+          onChange={(value) => categoriesChange(value)}
         >
-          <Select.Option key="Teste 1">Teste 1</Select.Option>
-          <Select.Option key="Teste 2">Teste 2</Select.Option>
-          <Select.Option key="Teste 3">Teste 3</Select.Option>
-          <Select.Option key="Teste 4">Teste 4</Select.Option>
-          <Select.Option key="Teste 5">Teste 5</Select.Option>
+          {
+            getCategories().map(
+              category => <Select.Option key={category.id}>{category.categoria}</Select.Option>
+            )
+          }
         </Select>
       </div>
     </Card>

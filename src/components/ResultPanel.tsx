@@ -1,16 +1,41 @@
 import { Card } from 'antd';
 import React from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 type Props = {
   docCount: IDocCount;
 }
 
 function ResultPanel({ docCount }: Props) {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
+
+  const changeDataSources = (newDataSource: string) => {
+    let params = [];
+    for (const [key, value] of searchParams.entries()) {
+      if (key === "dataSources") {
+        params.push(`${key}=${newDataSource}`);
+      } else {
+        params.push(`${key}=${value}`);
+      }
+    }
+    navigate(`/results?${params.join("&")}`);
+  }
+
   return (<div className='-my-4'>
     <Card size='small' title="Base de dados" className='my-4'>
-      <a href='' className='block'>Consumidor.gov.br ({docCount.consumidor_gov})</a>
-      <a href='' className='block'>Procon ({docCount.procon})</a>
-      <a href='' className='block'>Reclame Aqui ({docCount.reclame_aqui})</a>
+      {docCount.consumidor_gov ?
+        <a onClick={() => changeDataSources("consumidor_gov")} className='block'>Consumidor.gov.br ({docCount.consumidor_gov})</a>
+        : null
+      }
+      {docCount.procon ?
+        <a onClick={() => changeDataSources("procon")} className='block'>Procon ({docCount.procon})</a>
+        : null
+      }
+      {docCount.reclame_aqui ?
+        <a onClick={() => changeDataSources("reclame_aqui")} className='block'>Reclame Aqui ({docCount.reclame_aqui})</a>
+        : null
+      }
     </Card>
 
     {/* <Card size='small' title="Empresas" className='my-4'>

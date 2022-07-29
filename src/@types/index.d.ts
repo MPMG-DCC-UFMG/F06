@@ -52,3 +52,8 @@ interface IDocumento {
     tipo_problema?: string;
     titulo: string;
 }
+
+interface ICategories {
+    id: string,
+    categoria: string
+}

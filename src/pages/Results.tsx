@@ -1,4 +1,4 @@
-import { Pagination, Spin } from 'antd';
+import { Empty, Pagination, Spin } from 'antd';
 import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import ResultBlock from '../components/ResultBlock';
@@ -16,12 +16,37 @@ import HeaderMainFooter from '../templates/HeaderMainFooter';
 function Results() {
     const [page, setPage] = useState<number>(1);
     let [searchParams, setSearchParams] = useSearchParams();
-    const { error, data } = useFetch<ISearchResult>(`${Endpoint.Search}?consulta=${searchParams.get("query")}&pagina=${page}&sid=1&${searchParams.get("dataSources")?.split(",").map(source => `filtro_tipos_documentos[]=${source}`).join("&")}`);
+
+    const generateParams = () => {
+        let param = [`consulta=${searchParams.get("query")}`]
+        param.push(`pagina=${page}`)
+        param.push(`sid=1`)
+
+        param = param.concat(searchParams.get("dataSources")?.split(",").map(source => `filtro_tipos_documentos=${source}`) || [])
+        param = param.concat(searchParams.get("categories")?.split(",").map(source => `filtro_categoria_empresa=${source}`) || [])
+
+        if (searchParams.get("startDate")) param.push(`filtro_data_inicio=${searchParams.get("startDate")}`)
+        if (searchParams.get("endDate")) param.push(`filtro_data_fim=${searchParams.get("endDate")}`)
+
+        console.log(param);
+
+        return param.join("&");
+    }
+
+    const { error, data } = useFetch<ISearchResult>(`${Endpoint.Search}?${generateParams()}`);
 
     if (!data) {
         return <HeaderMainFooter>
             <div className="w-full h-[80vh] flex items-center justify-center">
                 <Spin size='large' />
+            </div>
+        </HeaderMainFooter>
+    }
+
+    if (data.documentos.length === 0) {
+        return <HeaderMainFooter>
+            <div className="w-full h-[80vh] flex items-center justify-center">
+                <Empty description="Sua busca não retornou nenhum resultado" />;
             </div>
         </HeaderMainFooter>
     }

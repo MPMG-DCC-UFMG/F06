@@ -23,12 +23,32 @@ function Home() {
     }]);
 
     const [sourceValues, setSourceValues] = useState<string[]>(["procon", "reclame_aqui", "consumidor_gov"]);
+    const [searchDate, setSearchDate] = useState<{ start?: string, end?: string }>({});
+    const [categories, setCategories] = useState<string[]>([]);
     const [helpIsVisible, setHelpIsVisible] = useState<boolean>(false);
+
+    const buildSearchParams = () => {
+        const params = [`query=${buildQuery()}`];
+
+        if (sourceValues.length)
+            params.push(`dataSources=${sourceValues.join(",")}`);
+
+        if (searchDate && searchDate.start && searchDate.end) {
+            params.push(`startDate=${searchDate.start}`);
+            params.push(`endDate=${searchDate.end}`);
+        }
+
+        if (categories.length) {
+            params.push(`categories=${categories.join(",")}`)
+        }
+
+        return params.join("&");
+    }
 
     const search = () => {
         navigate({
             pathname: "/results",
-            search: `?query=${buildQuery()}&dataSources=${sourceValues.join(",")}`
+            search: `?${buildSearchParams()}`
         })
     }
 
@@ -83,6 +103,8 @@ function Home() {
         <SearchPanel
             sourceValues={sourceValues}
             sourceValuesChange={sourceValuesChange}
+            searchDateChange={setSearchDate}
+            categoriesChange={setCategories}
         />
     }>
         <>
@@ -125,9 +147,11 @@ function Home() {
                 </div>
             </div>
 
-            <div className="w-full max-w-lg bottom-3 p-2 bg-slate-800 text-white absolute left-1/2 -translate-x-1/2 rounded-lg text-center opacity-40 hover:opacity-100 transition-opacity">
-                {buildQuery()}
-            </div>
+            {buildQuery() ?
+                <div className="w-full max-w-lg bottom-3 p-2 bg-slate-800 text-white absolute left-1/2 -translate-x-1/2 rounded-lg text-center opacity-40 hover:opacity-100 transition-opacity">
+                    {buildQuery()}
+                </div>
+                : null}
         </>
     </HeaderMainFooter >);
 }

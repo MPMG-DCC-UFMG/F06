@@ -1,3 +1,5 @@
 export enum Endpoint {
-    Search = "search"
+    Search = "procon/search",
+    ProconCategories = "procon_categories",
+    ReclameAquiCategories = "reclame_aqui_business_categories",
 }
