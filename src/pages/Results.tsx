@@ -28,8 +28,6 @@ function Results() {
         if (searchParams.get("startDate")) param.push(`filtro_data_inicio=${searchParams.get("startDate")}`)
         if (searchParams.get("endDate")) param.push(`filtro_data_fim=${searchParams.get("endDate")}`)
 
-        console.log(param);
-
         return param.join("&");
     }
 
@@ -73,7 +71,7 @@ function Results() {
                 </div>
 
                 <div >
-                    <Pagination defaultCurrent={1} current={page} total={data.total_paginas} onChange={(page, pageSize) => setPage(page)} />
+                    <Pagination hideOnSinglePage showSizeChanger={false} defaultCurrent={1} current={page} total={data.total_paginas} onChange={(page, pageSize) => setPage(page)} />
                 </div>
 
             </div>

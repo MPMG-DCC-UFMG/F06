@@ -19,12 +19,13 @@ function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categ
   const { data: reclameAquiCategories } = useFetch<ICategories[]>(Endpoint.ReclameAquiCategories);
 
   const getCategories = () => {
-    let categories: ICategories[] = [];
+    return proconCategories || [];
+    // let categories: ICategories[] = [];
 
-    if (proconCategories) categories = categories.concat(proconCategories);
-    if (reclameAquiCategories) categories = categories.concat(reclameAquiCategories);
+    // if (proconCategories) categories = categories.concat(proconCategories);
+    // if (reclameAquiCategories) categories = categories.concat(reclameAquiCategories);
 
-    return categories;
+    // return categories;
   }
 
   return (<div className='-my-4'>

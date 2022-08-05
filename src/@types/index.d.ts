@@ -26,7 +26,7 @@ interface IDocCount {
 }
 
 interface IDocumento {
-    categoria_empresa?: string;
+    categoria_empresa?: string[];
     cidade: string;
     conteudo: string;
     data_criacao: number
@@ -38,6 +38,7 @@ interface IDocumento {
     estado: string;
     fonte?: string;
     id: string;
+    id_manifestacao?: string;
     id_pai?: string;
     nome_completo_empresa: string;
     nome_curto_empresa?: string;
@@ -51,6 +52,32 @@ interface IDocumento {
     tipo_postagem?: string;
     tipo_problema?: string;
     titulo: string;
+}
+
+interface IDocumentDetailResult {
+    document: IDocumentDetail
+}
+
+interface IDocumentDetail {
+    categoria_empresa: string[];
+    cidade: string;
+    data: string;
+    estado: string;
+    id: string;
+    nome_completo_empresa: string;
+    nome_curto_empresa: string;
+    resolvido: boolean;
+    segmentos?: IDocumentDetailSegment[];
+    site_empresa: string;
+    tipo_problema: string;
+    titulo: string;
+}
+
+interface IDocumentDetailSegment {
+    conteudo: string;
+    ordem_da_interacao: number;
+    tipo_interacao: "REPLY" | "ANSWER";
+    tipo_postagem: "complaint" | "interaction";
 }
 
 interface ICategories {

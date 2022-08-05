@@ -9,6 +9,7 @@ import Home from './pages/Home';
 import Results from './pages/Results';
 import { ConfigProvider } from 'antd';
 import ptBR from 'antd/es/locale/pt_BR';
+import Detail from './pages/Detail';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/results" element={<Results />} />
+            <Route path="/detail/:type/:id" element={<Detail />} />
           </Routes>
         </BrowserRouter>
       </GlobalContext>

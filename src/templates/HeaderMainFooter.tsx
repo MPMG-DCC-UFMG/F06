@@ -19,19 +19,21 @@ function HeaderMainFooter({ children, sideContent }: Props) {
         <Link to="/" className='text-white'>Buscador de Reclamações</Link>
       </Header>
       <Layout>
-        {
-          panelIsVisible && sideContent ?
-            <Sider width={300} className="bg-slate-200 p-4 relative h-lateral overflow-y-auto">
-              <div onClick={() => setPanelIsVisible(!panelIsVisible)} className="w-6 h-8 rounded-l bg-primary text-white shadow-lg z-10 absolute cursor-pointer right-0 top-4 flex justify-center items-center">
-                <Icon name='arrow-left-s-line' />
+        {sideContent ? <>
+          {
+            panelIsVisible ?
+              <Sider width={300} className="bg-slate-200 p-4 relative h-lateral overflow-y-auto">
+                <div onClick={() => setPanelIsVisible(!panelIsVisible)} className="w-6 h-8 rounded-l bg-primary text-white shadow-lg z-10 absolute cursor-pointer right-0 top-4 flex justify-center items-center">
+                  <Icon name='arrow-left-s-line' />
+                </div>
+                {sideContent}
+              </Sider>
+              :
+              <div onClick={() => setPanelIsVisible(!panelIsVisible)} className="w-6 h-8 rounded-r bg-primary text-white shadow-lg z-10 absolute cursor-pointer left-0 mt-4 flex justify-center items-center">
+                <Icon name='arrow-right-s-line' />
               </div>
-              {sideContent}
-            </Sider>
-            :
-            <div onClick={() => setPanelIsVisible(!panelIsVisible)} className="w-6 h-8 rounded-r bg-primary text-white shadow-lg z-10 absolute cursor-pointer left-0 mt-4 flex justify-center items-center">
-              <Icon name='arrow-right-s-line' />
-            </div>
-        }
+          } </>
+          : null}
         <Layout>
           <Content className='h-lateral overflow-y-auto relative'>
             {children}
