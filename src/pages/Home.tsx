@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import HomeHelp from '../components/HomeHelp';
+import HelpModal from '../components/HelpModal';
 import Icon from '../components/Icon';
 import SearchField from '../components/SearchField';
 import SearchPanel from '../components/SearchPanel';
@@ -25,10 +25,9 @@ function Home() {
     const [sourceValues, setSourceValues] = useState<string[]>(["procon", "reclame_aqui", "consumidor_gov"]);
     const [searchDate, setSearchDate] = useState<{ start?: string, end?: string }>({});
     const [categories, setCategories] = useState<string[]>([]);
-    const [helpIsVisible, setHelpIsVisible] = useState<boolean>(false);
 
     const buildSearchParams = () => {
-        const params = [`query=${buildQuery()}`];
+        const params = [`query=${encodeURIComponent(buildQuery())}`];
 
         if (sourceValues.length)
             params.push(`dataSources=${sourceValues.join(",")}`);
@@ -109,13 +108,12 @@ function Home() {
     }>
         <>
 
-            <HomeHelp isModalVisible={helpIsVisible} onClose={() => setHelpIsVisible(false)} />
             <div className="absolute right-4 top-4 text-xl">
-                <Icon name='question-fill' className='cursor-pointer' onClick={() => setHelpIsVisible(true)} />
+                <HelpModal />
             </div>
 
             <div className="w-full h-full flex items-center justify-center">
-                <div className="w-full max-w-lg ">
+                <form onSubmit={search} className="w-full max-w-lg ">
 
                     {searchValues.map((item, i) =>
                         <SearchField
@@ -142,9 +140,9 @@ function Home() {
                     </div>
 
                     <div className="my-4 text-center">
-                        <Button onClick={() => search()} type='primary' icon={<Icon name='search-line' margin='right' />}>Pesquisar</Button>
+                        <Button htmlType='submit' type='primary' icon={<Icon name='search-line' margin='right' />}>Pesquisar</Button>
                     </div>
-                </div>
+                </form>
             </div>
 
             {buildQuery() ?

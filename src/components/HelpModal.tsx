@@ -1,14 +1,14 @@
 import { Modal } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
+import Icon from './Icon';
 
-type Props = {
-    isModalVisible: boolean,
-    onClose: () => void
-}
 
-function HomeHelp({ isModalVisible, onClose }: Props) {
+function HelpModal() {
+    const [helpIsVisible, setHelpIsVisible] = useState<boolean>(false);
+
     return (<>
-        <Modal title="Basic Modal" visible={isModalVisible} onCancel={onClose} footer={null} >
+        <Icon name='question-fill' className='cursor-pointer' onClick={() => setHelpIsVisible(true)} />
+        <Modal title="Ajuda" visible={helpIsVisible} onCancel={() => setHelpIsVisible(false)} footer={null} >
 
             <p><strong>Operadores lógicos:</strong> OU, E (+), E NÃO (-), precedência: abre "(" e fecha parênteses ")"</p>
 
@@ -29,4 +29,4 @@ function HomeHelp({ isModalVisible, onClose }: Props) {
     </>);
 }
 
-export default HomeHelp;
+export default HelpModal;

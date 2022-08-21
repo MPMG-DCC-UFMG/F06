@@ -1,8 +1,10 @@
-import { Card, Checkbox, DatePicker, Input, Select } from 'antd';
+import { Card, Checkbox, DatePicker, Input, Select, Switch } from 'antd';
+import type { Moment } from 'moment';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import React from 'react';
+import React, { useState } from 'react';
 import { Endpoint } from '../constants/endpoints';
 import useFetch from '../hooks/useFetch';
+import { sourceList } from '../constants/sourceList';
 
 const { RangePicker } = DatePicker;
 
@@ -13,8 +15,13 @@ type Props = {
   categoriesChange: (values: string[]) => void;
 }
 
-function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categoriesChange }: Props) {
+const mappedSourceList = sourceList.map(item => ({
+  label: item.name,
+  value: item.key
+}));
 
+function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categoriesChange }: Props) {
+  const [allDataBase, setAllDataBase] = useState<boolean>(true);
   const { data: proconCategories } = useFetch<ICategories[]>(Endpoint.ProconCategories);
   const { data: reclameAquiCategories } = useFetch<ICategories[]>(Endpoint.ReclameAquiCategories);
 
@@ -28,16 +35,28 @@ function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categ
     // return categories;
   }
 
+  const onChangeAllDataBase = (checked: boolean) => {
+    setAllDataBase(checked);
+    sourceValuesChange(mappedSourceList.map(item => item.value));
+  }
+
+  const disabledDate = (current: Moment) => {
+    const toLatte = current.toDate().getTime() > new Date().getTime();
+    return toLatte;
+  };
+
   return (<div className='-my-4'>
     <Card size='small' title="Bases de dados" className='my-4'>
-      <Checkbox.Group
-        value={sourceValues}
-        onChange={sourceValuesChange}
-        options={[
-          { label: "Procon", value: "procon" },
-          { label: "Reclame Aqui", value: "reclame_aqui" },
-          { label: "Consumidor.gov.br", value: "consumidor_gov" }
-        ]} />
+      <label className='flax gap-2'>
+        <Switch defaultChecked onChange={onChangeAllDataBase} /> Todas as Bases de dados
+      </label>
+      {!allDataBase ?
+        <Checkbox.Group
+          className='mt-4'
+          value={sourceValues}
+          onChange={sourceValuesChange}
+          options={mappedSourceList} />
+        : null}
     </Card>
 
     <Card size='small' title="Período" className='my-4'>
@@ -46,6 +65,7 @@ function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categ
           start: values?.[0]?.format("YYYY-MM-DD"),
           end: values?.[1]?.format("YYYY-MM-DD"),
         })}
+        disabledDate={disabledDate}
       />
     </Card>
 

@@ -39,9 +39,9 @@ function SearchField({ first, index, count, onRemove, onChange, data }: Props) {
                     </Select>
                 </div>
                 : null}
-            <Input.TextArea
+            <Input
+                required
                 placeholder='Digite uma ou mais palavras-chave'
-                autoSize
                 value={data.query}
                 onChange={(ev) => changeData('query', ev.target.value)}
             />

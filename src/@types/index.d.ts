@@ -20,9 +20,7 @@ interface ISearchResult {
 }
 
 interface IDocCount {
-    procon: number;
-    consumidor_gov: number;
-    reclame_aqui: number;
+    [key: string]: number;
 }
 
 interface IDocumento {
