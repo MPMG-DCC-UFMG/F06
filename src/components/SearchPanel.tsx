@@ -41,8 +41,9 @@ function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categ
   }
 
   const disabledDate = (current: Moment) => {
-    const toLatte = current.toDate().getTime() > new Date().getTime();
-    return toLatte;
+    const toEarly = current.toDate().getTime() < new Date(2010, 0, 1).getTime();
+    const toLate = current.toDate().getTime() > new Date().getTime();
+    return toEarly || toLate;
   };
 
   return (<div className='-my-4'>
