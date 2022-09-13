@@ -82,8 +82,12 @@ function Home() {
                 if (!item.indented && isIndented)
                     query += ")";
 
-                if (query)
+                if (query) {
+                    if (item.operator !== " ")
+                        query += " ";
+
                     query += item.operator;
+                }
 
                 if (item.indented && !isIndented)
                     query += "(";
