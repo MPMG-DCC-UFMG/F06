@@ -82,3 +82,12 @@ interface ICategories {
     id: string,
     categoria: string
 }
+
+interface ICity {
+    id: string,
+    nome_cidade: string
+    codigo_cidade: string
+    nome_estado: string
+    codigo_estado: string
+    sigla_estado: string
+}

@@ -28,6 +28,7 @@ function Results() {
         param = param.concat(searchParams.get("dataSources")?.split(",").map(source => `filtro_tipos_documentos=${source}`) || [])
         param = param.concat(searchParams.get("categories")?.split(",").map(source => `filtro_categoria_empresa=${source}`) || [])
 
+        if (searchParams.get("city")) param.push(`filtro_cidade=${searchParams.get("city")}`)
         if (searchParams.get("startDate")) param.push(`filtro_data_inicio=${searchParams.get("startDate")}`)
         if (searchParams.get("endDate")) param.push(`filtro_data_fim=${searchParams.get("endDate")}`)
 

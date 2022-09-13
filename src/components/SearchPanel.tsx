@@ -13,6 +13,7 @@ type Props = {
   sourceValuesChange: (checkedValues: CheckboxValueType[]) => void;
   searchDateChange: (date: { start?: string, end?: string }) => void;
   categoriesChange: (values: string[]) => void;
+  citiesChange: (values: string) => void;
 }
 
 const mappedSourceList = sourceList.map(item => ({
@@ -20,10 +21,11 @@ const mappedSourceList = sourceList.map(item => ({
   value: item.key
 }));
 
-function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categoriesChange }: Props) {
+function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categoriesChange, citiesChange }: Props) {
   const [allDataBase, setAllDataBase] = useState<boolean>(true);
   const { data: proconCategories } = useFetch<ICategories[]>(Endpoint.ProconCategories);
   const { data: reclameAquiCategories } = useFetch<ICategories[]>(Endpoint.ReclameAquiCategories);
+  const { data: cities } = useFetch<ICity[]>(Endpoint.Cities + "?filtro_sigla_estado=MG");
 
   const getCategories = () => {
     return proconCategories || [];
@@ -88,9 +90,20 @@ function SearchPanel({ sourceValues, sourceValuesChange, searchDateChange, categ
       </div>
     </Card>
 
-    <Card size='small' title="Lugar" className='my-4'>
+    <Card size='small' title="Cidade" className='my-4'>
       <div className="my-2">
-        <Input />
+        <Select
+          allowClear
+          placeholder="Todas as cidades"
+          className='w-full'
+          onChange={(value) => citiesChange(value)}
+        >
+          {
+            (cities || []).map(
+              city => <Select.Option key={city.nome_cidade}>{city.nome_cidade}</Select.Option>
+            )
+          }
+        </Select>
       </div>
     </Card>
 

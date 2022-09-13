@@ -25,6 +25,7 @@ function Home() {
     const [sourceValues, setSourceValues] = useState<string[]>(["procon", "reclame_aqui", "consumidor_gov"]);
     const [searchDate, setSearchDate] = useState<{ start?: string, end?: string }>({});
     const [categories, setCategories] = useState<string[]>([]);
+    const [city, setCity] = useState<string>("");
 
     const buildSearchParams = () => {
         const params = [`query=${encodeURIComponent(buildQuery())}`];
@@ -39,6 +40,10 @@ function Home() {
 
         if (categories.length) {
             params.push(`categories=${categories.join(",")}`)
+        }
+
+        if (city.length) {
+            params.push(`city=${city}`)
         }
 
         return params.join("&");
@@ -104,6 +109,7 @@ function Home() {
             sourceValuesChange={sourceValuesChange}
             searchDateChange={setSearchDate}
             categoriesChange={setCategories}
+            citiesChange={setCity}
         />
     }>
         <>
