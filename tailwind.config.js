@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: "#001E3C"
+        primary: "#000000",
+        secondary: "#F15A24"
       },
       height: {
         lateral: "calc(100vh - 64px)"

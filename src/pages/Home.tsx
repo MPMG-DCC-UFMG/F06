@@ -156,7 +156,7 @@ function Home() {
             </div>
 
             {buildQuery() ?
-                <div className="w-full max-w-lg bottom-3 p-2 bg-slate-800 text-white absolute left-1/2 -translate-x-1/2 rounded-lg text-center opacity-40 hover:opacity-100 transition-opacity">
+                <div className="w-full max-w-lg bottom-3 p-2 bg-gray-800 text-white absolute left-1/2 -translate-x-1/2 rounded-lg text-center opacity-40 hover:opacity-100 transition-opacity">
                     {buildQuery()}
                 </div>
                 : null}

@@ -25,7 +25,7 @@ function ResultBlock({ data }: Props) {
               <strong>{data.nome_completo_empresa || "[Indeterminada]"}</strong> - {new Date(data.data_criacao * 1000).toLocaleDateString("pt-br")} - {data.cidade}/{data.estado} - {currentSourceType(data.tipo)?.name} - <strong>#{data.id_manifestacao || data.id}</strong>
             </Link>
           </p>
-          <p className='text-sm mb-2 text-slate-400 truncate  w-full'>{data.titulo}</p>
+          <p className='text-sm mb-2 text-gray-400 truncate  w-full'>{data.titulo}</p>
           <p className='my-2' dangerouslySetInnerHTML={{ __html: data.descricao }}></p>
           <div className="flex">
             <div className="flex-1">

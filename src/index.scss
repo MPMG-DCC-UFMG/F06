@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-    @apply bg-slate-50 #{!important};
+    @apply bg-gray-50 #{!important};
 }
 
 header {
@@ -19,4 +19,12 @@ main {
     .ant-rate-star-first, .ant-rate-star-second {
         color: #d0d4d9 !important;
     }
+}
+
+.ant-btn-primary, .ant-checkbox-inner {
+    @apply bg-secondary border-secondary #{!important};
+}
+
+.ant-switch-checked, .ant-spin-dot-item {
+    @apply bg-secondary #{!important};
 }

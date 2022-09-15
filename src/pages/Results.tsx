@@ -67,7 +67,7 @@ function Results() {
     return (<HeaderMainFooter sideContent={<ResultPanel docCount={data.doc_counts_by_index} />}>
         <>
 
-            <div className="text-sm -m-4 px-4 py-2 bg-slate-800 text-white mb-4 divide-y divide-slate-600">
+            <div className="text-sm -m-4 px-4 py-2 bg-gray-800 text-white mb-4 divide-y divide-gray-600">
                 <div className='py-2 pb-4 flex gap-2 items-center'>
                     <Input.Search className='w-full' value={query || ""} onChange={onChangeQuery} onSearch={onSearch} />
                     <HelpModal />
