@@ -1,13 +1,14 @@
 
 import { Button } from 'antd';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HelpModal from '../components/HelpModal';
 import Icon from '../components/Icon';
 import SearchField from '../components/SearchField';
 import SearchPanel from '../components/SearchPanel';
 import HeaderMainFooter from '../templates/HeaderMainFooter';
+import { GlobalStateContext } from '../wrappers/GlobalContext';
 
 export type SearchValue = {
     operator?: " " | "+" | "-";
@@ -22,10 +23,7 @@ function Home() {
         query: ""
     }]);
 
-    const [sourceValues, setSourceValues] = useState<string[]>(["procon", "reclame_aqui", "consumidor_gov"]);
-    const [searchDate, setSearchDate] = useState<{ start?: string, end?: string }>({});
-    const [categories, setCategories] = useState<string[]>([]);
-    const [city, setCity] = useState<string>("");
+    const { sourceValues, searchDate, categories, city } = useContext(GlobalStateContext);
 
     const buildSearchParams = () => {
         const params = [`query=${encodeURIComponent(buildQuery())}`];
@@ -103,19 +101,7 @@ function Home() {
         return query;
     }
 
-    const sourceValuesChange = (checkedValues: CheckboxValueType[]) => {
-        setSourceValues(checkedValues.map(item => item.toString()));
-    }
-
-    return (<HeaderMainFooter sideContent={
-        <SearchPanel
-            sourceValues={sourceValues}
-            sourceValuesChange={sourceValuesChange}
-            searchDateChange={setSearchDate}
-            categoriesChange={setCategories}
-            citiesChange={setCity}
-        />
-    }>
+    return (<HeaderMainFooter sideContent={<SearchPanel />}>
         <>
 
             <div className="absolute right-4 top-4 text-xl">

@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { sourceList } from '../constants/sourceList';
 
 type Props = {
-  docCount: IDocCount;
+  docCount?: IDocCount;
 }
 
 function ResultPanel({ docCount }: Props) {
@@ -22,6 +22,8 @@ function ResultPanel({ docCount }: Props) {
     }
     navigate(`/results?${params.join("&")}`);
   }
+
+  if(!docCount) return null;
 
   return (<div className='-my-4'>
     <Card size='small' title="Base de dados" className='my-4'>

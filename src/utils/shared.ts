@@ -7,6 +7,12 @@ function paramsToObject(entries: any) {
     return result;
 }
 
+function formatDate(date: string) {
+    const d = new Date(date);
+    return d.toLocaleDateString();
+}
+
 export {
-    paramsToObject
+    paramsToObject,
+    formatDate
 }
